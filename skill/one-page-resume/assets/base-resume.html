@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OnePageResume Base Template</title>
+  <style>
+    /*
+      OnePageResume base template
+
+      This file is the stable HTML starting point for AI-generated resumes.
+      Use it when you need a predictable, spec-compliant one-page A4 resume.
+
+      Important rules for generators:
+      1. Preserve the required DOM structure and required structural classes.
+      2. Fill placeholders instead of inventing a new layout unless replacement is clearly better.
+      3. Keep section order stable unless the user explicitly requests another order.
+      4. Wrap English text and numeric fragments in .latin when mixed with Chinese text.
+      5. This also applies inside Chinese-styled titles, names, strong labels, and company lines. Browsers will not automatically switch embedded English text to Times New Roman if the parent element is already assigned Songti or another Chinese font.
+      6. Remove optional blocks cleanly if there is no content.
+      7. Keep most roles to 2-4 bullets; the strongest experience should usually use 3-4 bullets, while secondary project, internship, or campus entries should usually use 2-3 bullets.
+      8. Treat the avatar as a locked right-top component. Do not casually change its size or let responsive rules pull it into normal flow for print.
+      9. Use the fit-a4 script to make small density adjustments before changing content.
+    */
+
+    :root {
+      color-scheme: light;
+
+      /* Page model */
+      --page-margin: 6mm;
+      --printable-width: calc(210mm - (2 * var(--page-margin)));
+      --printable-height: calc(297mm - (2 * var(--page-margin)));
+
+      /* Surface */
+      --screen-bg: #eef2f7;
+      --paper-bg: #ffffff;
+      --paper-border: #d7dce5;
+      --screen-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+      --text: #111827;
+      --muted: #4b5563;
+      --line: #2b2b2b;
+      --line-thickness: 0.9px;
+      --soft-line: #d1d5db;
+
+      /* Density controls */
+      --header-pad-top: 2.2mm;
+      --header-pad-bottom: 0.4mm;
+      --header-pad-x: 6mm;
+      --content-pad-x: 6mm;
+      --content-pad-bottom: 3mm;
+      --section-gap: 4px;
+      --section-heading-gap: 4px;
+      --job-gap: 1px;
+      --company-gap: 3px;
+      --list-gap-top: 5px;
+      --list-item-gap: 3px;
+      --contact-gap: 5px;
+      --contact-font-size: 10pt;
+
+      /* Typography */
+      --name-size: 19.2pt;
+      --subtitle-size: 10.7pt;
+      --section-title-size: 11.7pt;
+      --job-title-size: 10.5pt;
+      --body-font-size: 9.15pt;
+      --meta-font-size: 8.65pt;
+      --body-line-height: 1.4;
+      --meta-line-height: 1.34;
+      --name-line-height: 1.18;
+      --section-letter-spacing: 0.28px;
+
+      /* Media: lock the avatar to a stable print-friendly size */
+      --avatar-width: 20mm;
+      --avatar-height: 26mm;
+      --avatar-radius: 4px;
+      --avatar-bottom-gap: 6px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--screen-bg);
+      color: var(--text);
+    }
+
+    body {
+      padding: 24px 16px;
+      font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+      line-height: var(--body-line-height);
+      text-rendering: optimizeLegibility;
+    }
+
+    .resume {
+      width: min(100%, var(--printable-width));
+      min-height: var(--printable-height);
+      margin: 0 auto;
+      background: var(--paper-bg);
+      border: 1px solid var(--paper-border);
+      box-shadow: var(--screen-shadow);
+      overflow: visible;
+      position: relative;
+    }
+
+    .header {
+      position: relative;
+      padding: var(--header-pad-top) var(--header-pad-x) var(--header-pad-bottom);
+      padding-right: calc(var(--avatar-width) + var(--header-pad-x) + 5mm);
+      min-height: calc(var(--avatar-height) + var(--header-pad-top) + var(--avatar-bottom-gap));
+      border-bottom: none;
+    }
+
+    .header.no-avatar {
+      padding-right: var(--header-pad-x);
+    }
+
+    .header-top {
+      display: block;
+    }
+
+    .header-main {
+      min-width: 0;
+    }
+
+    .name {
+      margin: 0;
+      font-family: "Songti SC", "STSong", "SimSun", serif;
+      font-size: var(--name-size);
+      line-height: var(--name-line-height);
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      font-family: "Songti SC", "STSong", "SimSun", serif;
+      font-size: var(--subtitle-size);
+      line-height: 1.24;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .contact {
+      margin-top: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--contact-gap);
+      color: var(--muted);
+      font-size: var(--contact-font-size);
+      line-height: 1.34;
+    }
+
+    .contact span {
+      white-space: nowrap;
+    }
+
+    .contact .dot {
+      color: #6b7280;
+    }
+
+    .avatar {
+      position: absolute;
+      top: var(--header-pad-top);
+      right: var(--header-pad-x);
+      width: var(--avatar-width);
+      height: var(--avatar-height);
+      object-fit: cover;
+      object-position: center top;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      display: block;
+    }
+
+    .avatar.is-missing {
+      display: none;
+    }
+
+    .content {
+      padding: 0 var(--content-pad-x) var(--content-pad-bottom);
+    }
+
+    .section {
+      padding-top: var(--section-gap);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .section > h2 {
+      margin: 0 0 var(--section-heading-gap);
+      font-family: "Songti SC", "STSong", "SimSun", serif;
+      font-size: var(--section-title-size);
+      line-height: 1.24;
+      font-weight: 700;
+      letter-spacing: var(--section-letter-spacing);
+      color: var(--text);
+      display: block;
+    }
+
+    .section > h2::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: var(--line-thickness);
+      margin-top: 4px;
+      background: var(--line);
+    }
+
+    p,
+    li {
+      margin: 0;
+      font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+      font-size: var(--body-font-size);
+      line-height: var(--body-line-height);
+      color: var(--text);
+    }
+
+    .latin {
+      font-family: "Times New Roman", "Times", serif;
+    }
+
+    .job {
+      margin-top: var(--job-gap);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .job-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .job-title {
+      font-family: "Songti SC", "STSong", "SimSun", serif;
+      font-size: var(--job-title-size);
+      line-height: 1.28;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .job-meta,
+    .edu-meta,
+    .company-info {
+      font-size: var(--meta-font-size);
+      line-height: var(--meta-line-height);
+    }
+
+    .job-meta,
+    .edu-meta {
+      color: var(--muted);
+    }
+
+    .company-info {
+      margin-top: var(--company-gap);
+      color: #1f2937;
+    }
+
+    .company-info strong,
+    .edu-main,
+    .skills-grid p strong {
+      font-family: "Songti SC", "STSong", "SimSun", serif;
+      font-weight: 700;
+    }
+
+    ul {
+      margin: var(--list-gap-top) 0 0;
+      padding-left: 16px;
+    }
+
+    li {
+      margin-bottom: var(--list-item-gap);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+
+    .edu-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .edu-main {
+      font-size: 10pt;
+      line-height: 1.28;
+      color: var(--text);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+
+    .fit-end-marker {
+      display: block;
+      width: 100%;
+      height: 0;
+      pointer-events: none;
+    }
+
+    @media (max-width: 860px) {
+      body {
+        padding: 12px 0;
+        background: #ffffff;
+      }
+
+      .resume {
+        width: 100%;
+        min-height: auto;
+        border: none;
+        box-shadow: none;
+      }
+
+      .header {
+        padding-right: var(--header-pad-x);
+      }
+
+      .avatar {
+        position: static;
+        margin-top: 8px;
+        width: 62px;
+        height: 80px;
+      }
+    }
+
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: var(--page-margin);
+      }
+
+      html,
+      body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      body {
+        font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+      }
+
+      .resume {
+        width: 100% !important;
+        min-height: auto !important;
+        border: none !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+      }
+
+      .header {
+        padding-right: calc(var(--avatar-width) + var(--header-pad-x) + 5mm) !important;
+      }
+
+      .avatar {
+        position: absolute !important;
+        top: var(--header-pad-top) !important;
+        right: var(--header-pad-x) !important;
+        margin-top: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!--
+    How to use this template:
+    - Replace placeholder content with user content.
+    - Preserve class names required by the project spec.
+    - Remove entire optional sections if they are empty.
+    - Keep the fit-end-marker at the very end of .content; fit-a4.js measures against it.
+    - When Chinese text contains English or numeric fragments, wrap those fragments in .latin.
+    - Use divider lines only for major sections; render section dividers as full-width horizontal rules below titles, never between bullets.
+    - Keep the avatar pinned to the top-right in print; do not let responsive rules move it into flow during PDF export.
+  -->
+
+  <main class="resume" data-page-margin-mm="6">
+    <header class="header">
+      <div class="header-top">
+        <div class="header-main">
+          <h1 class="name">[[中文名或 <span class="latin">Full Name</span>]]</h1>
+          <div class="subtitle">[[一句话角色定位 / <span class="latin">Role Title</span>]]</div>
+          <div class="contact">
+            <span>[[城市 / 城市，省份]]</span>
+            <span class="dot">·</span>
+            <span class="latin">[[+86 188-0000-0000]]</span>
+            <span class="dot">·</span>
+            <span class="latin">[[name@example.com]]</span>
+            <span class="dot">·</span>
+            <span class="latin">[[linkedin.com/in/handle]]</span>
+          </div>
+        </div>
+        <img class="avatar" src="[[./assets/images/avatar-placeholder.svg-or-remove-image]]" alt="[[头像，可选]]" onerror="this.classList.add('is-missing'); this.closest('.header')?.classList.add('no-avatar'); this.alt='';" />
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Optional summary section. Remove if it does not earn the space. -->
+      <section class="section section-summary">
+        <h2>个人概述</h2>
+        <p>
+          [[用 <span class="latin">2</span> 到 <span class="latin">3</span> 句高度概括候选人的定位、核心能力和结果导向；如果摘要偏弱，请删除整个 section。]]
+        </p>
+      </section>
+
+      <section class="section section-education">
+        <h2>教育经历</h2>
+        <div class="edu-item">
+          <div class="edu-main">[[学校名称]]｜[[学位 / 专业]]</div>
+          <div class="edu-meta latin">[[2020.09 – 2024.06]]</div>
+        </div>
+        <p class="company-info">
+          [[如需补充 GPA、排名、荣誉，请保持短而有价值，例如：<span class="latin">GPA 3.87 / 5.0</span>，专业前 <span class="latin">20%</span>。]]
+        </p>
+      </section>
+
+      <section class="section section-experience">
+        <h2>工作经历</h2>
+        <article class="job">
+          <div class="job-head">
+            <div class="job-title">[[公司名称 / <span class="latin">Company Name</span>]]｜[[职位名称 / <span class="latin">Role Title</span>]]</div>
+            <div class="job-meta">
+              <span class="latin">[[2025.03 – Present]]</span>
+              <span> | </span>
+              <span>[[城市 / 地区]]</span>
+            </div>
+          </div>
+          <p class="company-info">
+            [[如果公司背景对理解简历价值很重要，可用一句短描述；否则省略冗长介绍。]]
+          </p>
+          <ul>
+            <li>
+              [[优先写行动 + 结果 + 量化信息，例如：负责某类客户开发，推动合同金额达到 <span class="latin">¥860,000</span>。]]
+            </li>
+            <li>
+              [[每条 bullet 尽量保持一条强句，不要写成长段说明。]]
+            </li>
+            <li>
+              [[英文公司名、金额、百分比、日期、工具名等片段请用 <span class="latin">.latin</span> 包裹。]]
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- Keep either projects or internship experience when they add value. Remove weak sections. If internship is its own major section, let the section title line separate it from Work Experience. -->
+      <section class="section section-projects">
+        <h2>项目经历</h2>
+        <article class="job">
+          <div class="job-head">
+            <div class="job-title">[[公司 / 项目主体]]｜[[项目名称或角色]]</div>
+            <div class="job-meta"><span class="latin">[[2024.11 – 2025.01]]</span><span> | </span><span>[[城市 / 地区]]</span></div>
+          </div>
+          <p class="company-info">
+            [[用一句话说明项目是什么，以及它为什么值得占用页面空间。]]
+          </p>
+          <ul>
+            <li>[[突出产出、验证结果或对业务/产品/技术的实际价值。]]</li>
+            <li>[[如果项目较弱或信息重复，请直接删除整个 section。]]</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="section section-skills">
+        <h2>技能</h2>
+        <div class="skills-grid">
+          <p><strong>语言能力：</strong>[[中文]]、<span class="latin">[[English]]</span></p>
+          <p><strong>业务能力：</strong>[[按组呈现，不要展开成长列表。]]</p>
+          <p><strong>工具与技术：</strong><span class="latin">[[Claude Code, Codex, LinkedIn Sales Navigator]]</span></p>
+        </div>
+      </section>
+
+      <span class="fit-end-marker" aria-hidden="true"></span>
+    </div>
+  </main>
+
+  <!--
+    Integration note:
+    - If this template is materialized into a real working HTML file, make sure fit-a4.js is reachable.
+    - The script is responsible for small overflow / underfill adjustments while preserving readability.
+  -->
+  <script src="../scripts/fit-a4.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      window.OnePageResumeFitA4?.fit();
+    });
+
+    window.addEventListener('beforeprint', function () {
+      window.OnePageResumeFitA4?.fit();
+    });
+  </script>
+</body>
+</html>

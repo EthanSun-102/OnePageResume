@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OnePageResume Content Schema",
+  "type": "object",
+  "required": ["basics", "education", "experience", "skills"],
+  "additionalProperties": false,
+  "properties": {
+    "basics": {
+      "type": "object",
+      "required": ["name", "headline", "contacts"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "object",
+          "required": ["primary"],
+          "additionalProperties": false,
+          "properties": {
+            "primary": { "type": "string" },
+            "secondary": { "type": "string" }
+          }
+        },
+        "headline": { "type": "string" },
+        "avatar": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "src": { "type": "string" },
+            "alt": { "type": "string" },
+            "enabled": { "type": "boolean" }
+          }
+        },
+        "contacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string",
+                "enum": ["location", "phone", "email", "linkedin", "website", "other"]
+              },
+              "value": { "type": "string" },
+              "latin": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["school", "program", "dateRange"],
+        "additionalProperties": false,
+        "properties": {
+          "school": { "type": "string" },
+          "program": { "type": "string" },
+          "dateRange": { "type": "string" },
+          "details": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "experience": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["company", "position", "dateRange", "location", "bullets"],
+        "additionalProperties": false,
+        "properties": {
+          "company": { "type": "string" },
+          "position": { "type": "string" },
+          "dateRange": { "type": "string" },
+          "location": { "type": "string" },
+          "summary": { "type": "string" },
+          "bullets": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 4,
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["organization", "roleOrProject", "dateRange", "location", "bullets"],
+        "additionalProperties": false,
+        "properties": {
+          "organization": { "type": "string" },
+          "roleOrProject": { "type": "string" },
+          "dateRange": { "type": "string" },
+          "location": { "type": "string" },
+          "summary": { "type": "string" },
+          "bullets": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 3,
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "items"],
+        "additionalProperties": false,
+        "properties": {
+          "label": { "type": "string" },
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

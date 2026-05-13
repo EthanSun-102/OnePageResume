@@ -1,0 +1,13 @@
+{
+  "name": "one-page-resume",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "preview": "python3 -m http.server 4173",
+    "validate:resume": "node scripts/check-resume-preview.mjs --input resume.html",
+    "validate:resume:personal": "node scripts/check-resume-preview.mjs --input resume.personal.html"
+  },
+  "devDependencies": {
+    "playwright": "^1.54.2"
+  }
+}

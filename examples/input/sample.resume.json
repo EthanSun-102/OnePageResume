@@ -1,0 +1,76 @@
+{
+  "basics": {
+    "name": {
+      "primary": "候选人甲",
+      "secondary": "Candidate A"
+    },
+    "headline": "Tech Sales | AI & Data Infrastructure",
+    "avatar": {
+      "src": "./assets/images/avatar-placeholder.svg",
+      "alt": "候选人头像占位",
+      "enabled": true
+    },
+    "contacts": [
+      { "label": "location", "value": "华东地区", "latin": false },
+      { "label": "phone", "value": "+86 1XX-XXXX-XXXX", "latin": true },
+      { "label": "email", "value": "candidate@example.com", "latin": true },
+      { "label": "linkedin", "value": "linkedin.com/in/candidate-profile", "latin": true }
+    ]
+  },
+  "education": [
+    {
+      "school": "某财经类大学",
+      "program": "金融学 本科",
+      "dateRange": "2020.09 – 2024.06",
+      "details": [
+        "GPA 3.87 / 5.0（专业排名前 20%）"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "company": "某数据科技公司",
+      "position": "海外 BD",
+      "dateRange": "2025.03 – Present",
+      "location": "多地协同办公",
+      "summary": "主营 IP 代理、数据 API 与 AI 训练数据集的 B2B 科技公司，负责从线索获取、需求诊断到签约与客户维系的全周期销售工作。",
+      "bullets": [
+        "参与某头部数字资产企业 AI 数据项目，独立推进采购与技术对接、方案对齐及 MSA / SOW 签署，项目按时交付且零客诉；在合同约定交付之外，使用 Claude Code 采集并筛选公开视频数据集作为增量方案提供给客户，推动实现合同以外的 30 万业绩增量，并协助客户完成 AI 多模态模型的 pre-train 部分。",
+        "14 个月内参加 6 场大型行业展会（含 4 场国际展会），独立完成从现场客户接待、需求诊断到分级跟进的全流程，累计开发 200+ 企业客户线索，展会渠道单月贡献收入超 $10,000，并直接成交多家海外企业客户。",
+        "通过 LinkedIn 与 X 的内容建设和主动触达，在 5 个月内建联 10+ 家海外数据采集类、AI 类企业客户，以项目合作制方式与欧洲数据采集公司达成合作，并推进与 AI 视频生成公司至会议对齐需求阶段。",
+        "使用 Claude Code / Codex 独立开发 B2B 营销效率工具，获公司内部 vibe coding 比赛银奖，验证了从业务痛点识别到技术方案落地的完整能力。"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "organization": "某证券机构",
+      "roleOrProject": "投资银行部助理",
+      "dateRange": "2024.03 – 2024.06",
+      "location": "华东地区",
+      "bullets": [
+        "独立完成某新能源企业 IPO 项目财务核查，覆盖 2022–2023 年细节测试、销售穿行测试与大额流水双向核查，核对逾千条交易记录并确保零差错合规。",
+        "参与管理层及财务团队访谈，独立整理归档 10+ 份访谈纪要并撰写关键会议纪要，能够在高密度沟通中快速提炼关键关切与潜在分歧点。",
+        "在财务核查过程中主动识别异常交易模式与潜在财务风险，并向项目组提出具体解决方案，形成较强的问题发现与闭环推进意识。"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "label": "语言能力",
+      "items": ["中文（母语）", "English（商务熟练）"]
+    },
+    {
+      "label": "销售与业务开发",
+      "items": ["全周期企业销售", "销售管道管理", "合同谈判（MSA / SOW）", "国际展会销售", "KA 管理", "多渠道客户开发"]
+    },
+    {
+      "label": "产品与行业理解",
+      "items": ["IP 代理", "数据 API", "AI/ML 数据集", "网页采集生态", "广告科技与营销科技"]
+    },
+    {
+      "label": "工具与技术",
+      "items": ["LinkedIn Sales Navigator", "X", "Claude Code", "Codex", "协同办公平台"]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "skill_name": "one-page-resume",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a resume.html already, but when I press Cmd+P it spills onto a second page. Keep the content mostly the same and make it print as a clean one-page A4 PDF.",
+      "expected_output": "Refines existing HTML/CSS for A4 single-page print output while preserving readability, honoring the fit order of spacing -> line-height -> font-size, and keeping the result suitable for Cmd+P PDF export.",
+      "files": ["resume.html"]
+    },
+    {
+      "id": 2,
+      "prompt": "Turn my resume notes into a printable single-page A4 HTML resume that looks full and professional, then explain how I should export it to PDF. The output must use the project structure and class names, not a brand-new layout invention.",
+      "expected_output": "Generates a structured HTML resume that follows the packaged template and required semantic structure, applies A4-aware print CSS, and gives short Cmd+P export guidance.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Do not rewrite my content. Only optimize font size, spacing, and print CSS so this HTML resume fits one A4 page and still reads comfortably. Do not use avatar resizing as the default fix.",
+      "expected_output": "Performs layout-only optimization while preserving content structure and readability, and avoids treating avatar resizing as the primary density-control knob.",
+      "files": ["resume.html"]
+    },
+    {
+      "id": 4,
+      "prompt": "My resume has a headshot, but print preview keeps moving it out of the top-right corner. Keep the avatar in the header's top-right in both screen and print mode, and do not let responsive rules push it back into normal flow.",
+      "expected_output": "Preserves or restores a print-safe top-right avatar placement, keeps the avatar visually restrained, and explicitly prevents responsive fallback from breaking the print contract.",
+      "files": ["resume.html", "skill/one-page-resume/assets/base-resume.html", "skill/one-page-resume/scripts/fit-a4.js"]
+    },
+    {
+      "id": 5,
+      "prompt": "Normalize my experience blocks so the left side reads company plus position and the right side reads time plus location. Use the project's exact separators and keep the layout compact.",
+      "expected_output": "Applies the project job-head convention of `company｜position` on the left and `time | location` on the right, without splitting company into a separate description line unless length makes that necessary.",
+      "files": ["resume.html", "skill/one-page-resume/assets/base-resume.html"]
+    },
+    {
+      "id": 6,
+      "prompt": "My resume mixes Chinese text with English company names, titles, dates, numbers, and links. Keep the Chinese typography rules, but make sure the English and numeric fragments render with the project's Latin font treatment even inside Chinese-styled elements.",
+      "expected_output": "Enforces the font-role contract by keeping Chinese headings/body text in their assigned Chinese fonts and wrapping English or numeric fragments in `.latin` where needed so they follow the Times New Roman treatment.",
+      "files": ["resume.html", "skill/one-page-resume/assets/base-resume.html", "docs/resume-layout-spec.md"]
+    },
+    {
+      "id": 7,
+      "prompt": "I expanded my strongest experience bullets and the page is close to overflowing. Keep the main role at about 3-4 bullets, preserve the content as much as possible, and make it stay on one A4 page before suggesting cuts.",
+      "expected_output": "Handles the high-risk overflow case by first applying controlled layout tightening, keeps the strongest experience within the project's intended bullet density, and only recommends content cuts after safe layout adjustments are exhausted.",
+      "files": ["resume.html"]
+    }
+  ]
+}

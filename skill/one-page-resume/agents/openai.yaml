@@ -1,0 +1,7 @@
+interface:
+  display_name: "One Page Resume"
+  short_description: "Generate or refine print-safe one-page A4 HTML resumes"
+  default_prompt: "Use $one-page-resume when you need a reliable HTML-to-PDF resume workflow: generate or refine a printable one-page A4 HTML resume and preserve the print layout contract."
+
+policy:
+  allow_implicit_invocation: true
