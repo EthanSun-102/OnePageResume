@@ -20,18 +20,50 @@ This skill helps Claude produce or refine a resume that satisfies these constrai
 
 This skill supports three common modes:
 
-1. **Generate from content**  
+1. **Generate from content**
    The user provides resume notes, bullets, or structured data and wants a printable HTML resume.
 
-2. **Refine existing HTML**  
+2. **Refine existing HTML**
    The user already has a resume HTML file and wants it to print better.
 
-3. **Fit to one page**  
+3. **Fit to one page**
    The user wants to keep content mostly intact but needs layout adjustments so the result prints as one clean A4 page.
+
+## Output path contract
+
+The output file is always written to the user's Desktop:
+
+- Default output path: `~/Desktop/resume.html`
+- If the user specifies a filename: `~/Desktop/<filename>.html`
+- If `~/Desktop/resume.html` already exists: overwrite it directly
+- Always state the output path in the first reply and proceed immediately — do not ask for confirmation
+
+Never write to the project directory or any other path unless the user explicitly overrides this.
+
+## Clarifying questions
+
+Before generating, ask the user the following questions in a single message. Explain why each question matters so the user understands the tradeoff:
+
+1. **Mode** — "Are you generating a resume from scratch, refining an existing HTML file, or just fitting existing content to one page? This determines which template and rules I start from."
+2. **Content source** — "Please paste your resume content (notes, bullets, or existing HTML). The more complete this is, the less back-and-forth we need."
+3. **Language** — "Should the resume be in Chinese, English, or bilingual? This affects font rules and layout density."
+4. **Avatar** — "Do you want to include a photo? If yes, please provide the image path. If no, the header will be text-only."
+5. **Print vs screen** — "Is this for actual printing / PDF submission, or mainly for screen review? Print mode applies stricter A4 constraints."
+
+If the user's initial message already answers some of these, skip those questions and only ask the remaining ones. If all are answered, skip this step entirely and proceed directly to generation.
+
+## Fast path
+
+If the user's input is complete (content provided + mode is clear + language is clear), skip all clarifying questions and:
+
+1. State the output path (`~/Desktop/resume.html`) in the first reply
+2. Generate the full resume in one pass
+3. Write the file
+4. End with export instructions (Cmd+P settings)
 
 ## Workflow
 
-1. Identify which mode the user needs: generate, refine, or fit.
+1. Identify which mode applies: generate, refine, or fit.
 2. If the user already has an HTML resume, prefer editing that file over creating a new one.
 3. If the user provides raw content, structure it into sections such as basics, education, experience, and skills before generating HTML.
 4. In job headers, prefer the project convention: left side is `company + position`, right side is `time + location`. Use `｜` between company and position, and `|` between time and location.
@@ -48,49 +80,34 @@ This skill supports three common modes:
 11. Apply font roles strictly: Chinese section titles use Songti-style serif, Chinese descriptive text uses Kaiti-style serif, and English text plus numerals use Times New Roman. When English appears inside a Chinese-styled element, wrap the English fragment in `.latin` instead of relying on automatic browser fallback.
 12. Tell the user how to export with Cmd+P and what to check in print preview.
 
-## Primary packaged entrypoint
+## Minimum read set by mode
 
-Treat this skill folder as self-contained.
+Load only what the current task requires:
 
-Read packaged resources in this order:
+**Generate mode:**
+- Required: `references/layout-spec.md`, `assets/base-resume.html`
+- Load if content is incomplete or ambiguous: `references/input-format.md`
 
-1. `SKILL.md`
-2. `references/layout-spec.md`
-3. `assets/base-resume.html`
-4. `scripts/fit-a4.js`
-5. `references/layout-rules.md`
-6. `references/input-format.md`
-7. `evals/evals.json`
+**Refine / layout mode:**
+- Required: `references/layout-spec.md`
+- Load if making layout tradeoffs: `references/layout-rules.md`
 
-If these files conflict, prioritize them in that same order.
+**Fit to one page / density adjustment:**
+- Required: `references/layout-spec.md`, `scripts/fit-a4.js`
 
-## Output expectations
+**Regression check only:**
+- Load `evals/evals.json` only when verifying that a planned change does not break existing passing cases. Do not load it in the main generation path.
 
-When using this skill, aim to produce:
-
-- a printable HTML resume
-- A4 portrait print CSS
-- section blocks that avoid awkward page breaks
-- readable typography with controlled density
-- a result that is likely to export as a single-page PDF via Cmd+P
+If files conflict, resolve by this priority order: `SKILL.md` → `layout-spec.md` → `base-resume.html` → `fit-a4.js` → `layout-rules.md` → `input-format.md` → `evals.json`.
 
 ## Working with project files
 
-Use packaged skill resources first:
+If the surrounding repo also contains local resources, use them as optional helpers only:
 
-- Read `references/layout-spec.md` as the normative layout contract.
-- Use `assets/base-resume.html` as the canonical starting template.
-- Read `scripts/fit-a4.js` before changing density-control behavior.
-- Read `references/layout-rules.md` when making layout tradeoffs.
-- Read `references/input-format.md` when the user provides mixed or incomplete resume content.
-- Read `evals/evals.json` when checking whether a planned change would violate the skill's current regression coverage expectations.
+- Use files in `templates/` as a secondary starting point when they exist
+- Use `schema/resume.schema.json` and files in `examples/input/` to understand content structure when available
 
-If the surrounding repo also contains local project resources, use them as optional helpers:
-
-- Use `resume.html` or files in `templates/` as a starting point when they already exist.
-- Use `schema/resume.schema.json` and files in `examples/input/` to understand expected content structure when available.
-
-Treat repo-root docs as background context only. The packaged skill should not depend on them to understand the main layout contract.
+Treat repo-root docs as background context only. The packaged skill does not depend on them for the main layout contract.
 
 ## When to be strict
 
@@ -100,17 +117,7 @@ Be strict about:
 - keeping the resume on one page when reasonably possible
 - avoiding unreadably small text
 - avoiding loose, empty layouts
-
-## When to ask the user
-
-Ask brief clarifying questions only when needed, such as:
-
-- whether the user wants generation vs refinement
-- whether content may be shortened
-- whether bilingual output is needed
-- whether the resume is for screen review only or actual printing/interview submission
-
-If the user already gave enough context, proceed directly.
+- always writing output to `~/Desktop/`
 
 ## Notes
 
