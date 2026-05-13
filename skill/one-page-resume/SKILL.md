@@ -1,6 +1,6 @@
 ---
 name: one-page-resume
-description: Generate or refine a printable one-page A4 HTML resume from resume notes, structured JSON, or an existing HTML file. Use this whenever the real goal is a reliable HTML-to-PDF resume workflow: build a resume in HTML, export with Cmd+P, fit exactly one A4 page, or preserve a print-safe single-page layout contract.
+description: "Generate or refine a printable one-page A4 HTML resume from resume notes, structured JSON, or an existing HTML file. Use this whenever the real goal is a reliable HTML-to-PDF resume workflow: build a resume in HTML, export with Cmd+P, fit exactly one A4 page, or preserve a print-safe single-page layout contract."
 ---
 
 # One Page Resume
